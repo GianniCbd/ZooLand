@@ -1,5 +1,6 @@
 package natEst.nat.users;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -7,14 +8,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import natEst.nat.enums.Role;
+import natEst.nat.favorite.Favorite;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -35,6 +34,9 @@ public class User implements UserDetails {
     private String confirmPassword;
     @Enumerated (EnumType.STRING)
     private Set<Role> roles=new HashSet<>();
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Favorite> favorites;
 
 
     public User(String name, String surname, String email, String password, String confirmPassword) {
@@ -43,10 +45,13 @@ public class User implements UserDetails {
         this.email = email;
         this.password = password;
         this.confirmPassword = confirmPassword;
-
+        this.favorites = new ArrayList<>();
         this.roles.add(Role.ADMIN);
     }
 
+    public void addFavorite(Favorite favorite) {
+        this.favorites.add(favorite);
+    }
 
 
     @Override
@@ -79,4 +84,7 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return false;
     }
+
+
+
 }
