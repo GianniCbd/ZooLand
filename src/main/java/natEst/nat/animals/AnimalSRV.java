@@ -42,7 +42,7 @@ public class AnimalSRV {
         return animalDAO.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
     public Animal updateAnimal(Long id, AnimalDTO animalDTO) {
-        Animal found = animalDAO.findById(id).orElseThrow(() -> new NotFoundException("Room not found with ID: " + id));
+        Animal found = animalDAO.findById(id).orElseThrow(() -> new NotFoundException("Animal not found with ID: " + id));
         found.setName(animalDTO.name());
         found.setSpecies(animalDTO.species());
         found.setAge(animalDTO.age());

@@ -20,16 +20,16 @@ public class Habitat {
     private String type;
     private int capacity;
     private String terrainType;
-    private String trees;
+    private String image;
 
     @ManyToOne
     private Zoo zoo;
 
-    public Habitat(String name, String type, int capacity, String terrainType, String trees) {
+    public Habitat(String name, String type, int capacity, String terrainType, String image) {
         this.name = name;
         this.type = type;
         this.capacity = capacity;
         this.terrainType = terrainType;
-        this.trees = trees;
+        this.image = image;
     }
 }

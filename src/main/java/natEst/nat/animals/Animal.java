@@ -5,7 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import natEst.nat.likes.Like;
 import natEst.nat.zoo.Zoo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,6 +29,9 @@ public class Animal {
     private String height;
     private String image;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Like> like;
+
 
     @ManyToOne
     private Zoo zoo;
@@ -38,5 +45,16 @@ public class Animal {
         this.weight = weight;
         this.height = height;
         this.image = image;
+        this.like = new ArrayList<>();
+    }
+
+    public void addLike(Like like) {
+        if (!this.like.contains(like)) {
+            this.like.add(like);
+        }
+    }
+
+    public void removeLike(Like like) {
+        this.like.remove(like);
     }
 }

@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AnimalDAO extends JpaRepository<Animal,Long> {
-
+    Animal findByName(String name);
 
 }

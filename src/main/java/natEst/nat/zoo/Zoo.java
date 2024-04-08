@@ -21,7 +21,8 @@ public class Zoo {
     private Long id;
     private String name;
     private String email;
-    private String phoneNumber;
+    private  String image;
+
 
     @OneToMany(mappedBy = "zoo")
     private List<Animal> listaAnimali;
@@ -29,5 +30,9 @@ public class Zoo {
     @OneToMany(mappedBy = "zoo")
     private List<Habitat> listaHabitat;
 
-
+    public Zoo(String name, String email,String image) {
+        this.name = name;
+        this.email = email;
+        this.image=image;
+    }
 }
