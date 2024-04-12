@@ -1,11 +1,15 @@
 package natEst.nat.habitats;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import natEst.nat.animals.Animal;
 import natEst.nat.zoo.Zoo;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,6 +25,10 @@ public class Habitat {
     private int capacity;
     private String terrainType;
     private String image;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "habitat")
+    private List<Animal> listaAnimali;
 
     @ManyToOne
     private Zoo zoo;

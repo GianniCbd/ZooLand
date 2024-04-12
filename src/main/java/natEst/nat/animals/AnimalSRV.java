@@ -2,7 +2,10 @@ package natEst.nat.animals;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import natEst.nat.exceptions.BadRequestException;
 import natEst.nat.exceptions.NotFoundException;
+import natEst.nat.habitats.Habitat;
+import natEst.nat.habitats.HabitatoDAO;
 import natEst.nat.users.User;
 import natEst.nat.users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,8 @@ public class AnimalSRV {
     private Cloudinary cloudinaryUploader;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    private HabitatoDAO habitatoDAO;
 
     public Page<Animal> getAll(int pageNumber, int pageSize, String orderBy) {
         if (pageNumber > 20) pageSize = 20;
@@ -32,10 +37,13 @@ public class AnimalSRV {
     }
 
     public AnimalDTO saveAnimal(AnimalDTO animalDTO, User user) {
+        Habitat habitat = habitatoDAO.findById(animalDTO.habitat().getId())
+                .orElseThrow(() -> new BadRequestException("Invalid RoomType Id"));
+
         User loadedUser = userRepository.findById(user.getId()).orElseThrow(() -> new NotFoundException("User not found"));
-        Animal animal = new Animal(animalDTO.name(), animalDTO.species(), animalDTO.age(), animalDTO.gender(), animalDTO.favFood(), animalDTO.weight(), animalDTO.height(), animalDTO.image());
+        Animal animal = new Animal(animalDTO.name(), animalDTO.species(), animalDTO.age(), animalDTO.gender(), animalDTO.favFood(), animalDTO.weight(), animalDTO.height(), animalDTO.image(),habitat);
         animalDAO.save(animal);
-        AnimalDTO an = new AnimalDTO(animal.getName(), animalDTO.species(), animal.getAge(), animalDTO.gender(), animalDTO.favFood(), animal.getWeight(), animal.getHeight(), animal.getImage());
+        AnimalDTO an = new AnimalDTO(animal.getName(), animalDTO.species(), animal.getAge(), animalDTO.gender(), animalDTO.favFood(), animal.getWeight(), animal.getHeight(), animal.getImage(),habitat);
         return an;
     }
     public Animal getAnimalById(Long id) {
@@ -51,6 +59,7 @@ public class AnimalSRV {
         found.setWeight(animalDTO.weight());
         found.setHeight(animalDTO.height());
         found.setImage(animalDTO.image());
+        found.setHabitat(animalDTO.habitat());
 
         return animalDAO.save(found);
     }

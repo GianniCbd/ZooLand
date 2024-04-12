@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import natEst.nat.habitats.Habitat;
 import natEst.nat.likes.Like;
 import natEst.nat.zoo.Zoo;
 
@@ -32,11 +33,14 @@ public class Animal {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Like> like;
 
+    @ManyToOne
+    @JoinColumn(name = "habitat_id")
+    private Habitat habitat;
 
     @ManyToOne
     private Zoo zoo;
 
-    public Animal(String name, String species, int age, String gender, String favFood, String weight, String height,String image) {
+    public Animal(String name, String species, int age, String gender, String favFood, String weight, String height,String image,Habitat habitat) {
         this.name = name;
         this.species = species;
         this.age = age;
@@ -45,6 +49,7 @@ public class Animal {
         this.weight = weight;
         this.height = height;
         this.image = image;
+        this.habitat = habitat;
         this.like = new ArrayList<>();
     }
 

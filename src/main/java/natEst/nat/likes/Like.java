@@ -15,7 +15,7 @@ import natEst.nat.users.User;
 public class Like {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne

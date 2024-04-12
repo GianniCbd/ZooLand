@@ -46,6 +46,7 @@ public class User implements UserDetails {
         this.password = password;
         this.confirmPassword = confirmPassword;
         this.favorites = new ArrayList<>();
+
         this.roles.add(Role.ADMIN);
     }
 

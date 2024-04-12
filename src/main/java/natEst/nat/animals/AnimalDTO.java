@@ -1,5 +1,7 @@
 package natEst.nat.animals;
 
+import natEst.nat.habitats.Habitat;
+
 public record AnimalDTO(
        String name,
        String species,
@@ -8,6 +10,7 @@ public record AnimalDTO(
        String favFood,
        String weight,
        String height,
-       String image
+       String image,
+       Habitat habitat
 ) {
 }

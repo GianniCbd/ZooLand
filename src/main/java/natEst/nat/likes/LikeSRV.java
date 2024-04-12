@@ -6,7 +6,7 @@ import natEst.nat.exceptions.BadRequestException;
 import natEst.nat.exceptions.NotFoundException;
 import natEst.nat.exceptions.UnauthorizedException;
 import natEst.nat.users.User;
-import natEst.nat.users.UserService;
+import natEst.nat.users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +14,13 @@ import java.util.UUID;
 
 
 @Service
-public class LikeService {
+public class LikeSRV {
     @Autowired
     private LikeDAO likesDAO;
     @Autowired
     private AnimalDAO animalDAO;
     @Autowired
-    private UserService userDAO;
+    private UserRepository userDAO;
 
     public Like findById(long id) {
         return likesDAO.findById(id).orElseThrow(() -> new NotFoundException("il like con id: " + id + " non è stato trovato"));
@@ -29,10 +29,8 @@ public class LikeService {
     public Like addLike(long animalId, LikeDTO likeDTO) {
         Animal animal = animalDAO.findById(animalId)
                 .orElseThrow(() -> new NotFoundException("animale non trovato"));
-
         User user = userDAO.findById(likeDTO.userId())
                 .orElseThrow(() -> new NotFoundException("user non trovato"));
-
         boolean userAlreadyLiked = animal.getLike().stream().anyMatch(like -> like.getUser().equals(user));
         if (userAlreadyLiked) {
             throw new BadRequestException("L'utente ha già messo un like su questo animale.");
