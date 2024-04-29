@@ -8,7 +8,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -36,5 +38,13 @@ public class ZooCTRL {
     @PreAuthorize("hasAuthority('ADMIN')")
     public Zoo updateZoo(@PathVariable Long id, @RequestBody ZooDTO zooDTO) {
         return zooSRV.updateZoo(id,zooDTO);
+    }
+
+
+    @PatchMapping("/upload/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String uploadAvatar(@PathVariable Long id, @RequestParam("image") MultipartFile image) throws IOException {
+        return this.zooSRV.UploadImage(id, image);
     }
 }

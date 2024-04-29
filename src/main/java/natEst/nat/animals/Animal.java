@@ -29,8 +29,10 @@ public class Animal {
     private String weight;
     private String height;
     private String image;
+    private String distribution;
+    private String reproduction;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
     private List<Like> like;
 
     @ManyToOne
@@ -40,7 +42,7 @@ public class Animal {
     @ManyToOne
     private Zoo zoo;
 
-    public Animal(String name, String species, int age, String gender, String favFood, String weight, String height,String image,Habitat habitat) {
+    public Animal(String name, String species, int age, String gender, String favFood, String weight, String height,String image,String distribution,String reproduction,Habitat habitat) {
         this.name = name;
         this.species = species;
         this.age = age;
@@ -50,8 +52,11 @@ public class Animal {
         this.height = height;
         this.image = image;
         this.habitat = habitat;
+        this.distribution = distribution;
+        this.reproduction = reproduction;
         this.like = new ArrayList<>();
     }
+
 
     public void addLike(Like like) {
         if (!this.like.contains(like)) {

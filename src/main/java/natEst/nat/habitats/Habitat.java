@@ -40,4 +40,6 @@ public class Habitat {
         this.terrainType = terrainType;
         this.image = image;
     }
+
+
 }

@@ -1,5 +1,6 @@
 package natEst.nat.zoo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,9 +26,11 @@ public class Zoo {
 
 
     @OneToMany(mappedBy = "zoo")
+    @JsonIgnore
     private List<Animal> listaAnimali;
 
     @OneToMany(mappedBy = "zoo")
+    @JsonIgnore
     private List<Habitat> listaHabitat;
 
     public Zoo(String name, String email,String image) {

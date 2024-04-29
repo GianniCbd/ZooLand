@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/animals")
@@ -22,7 +23,7 @@ public class AnimalCTRL {
 
     @GetMapping("/all")
     public Page<Animal> getAll(@RequestParam(defaultValue = "0") int pageNumber,
-                               @RequestParam(defaultValue = "10") int pageSize,
+                               @RequestParam(defaultValue = "100") int pageSize,
                                @RequestParam(defaultValue = "id") String orderBy) {
         return animalSRV.getAll(pageNumber, pageSize, orderBy);
     }
@@ -58,4 +59,12 @@ public class AnimalCTRL {
     public void deleteAnimal(@PathVariable Long id) {
         animalSRV.deleteAnimal(id);
     }
+
+//-------------------------------------------------------------------
+@GetMapping("/countByHabitat")
+public List<Object[]> countAnimalsByHabitat() {
+    return animalSRV.countAnimalsByHabitat();
+}
+
+
 }

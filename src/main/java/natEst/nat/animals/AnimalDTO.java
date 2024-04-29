@@ -11,6 +11,9 @@ public record AnimalDTO(
        String weight,
        String height,
        String image,
+       String distribution,
+       String reproduction,
        Habitat habitat
+
 ) {
 }

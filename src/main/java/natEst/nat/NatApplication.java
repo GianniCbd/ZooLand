@@ -8,6 +8,15 @@ public class NatApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(NatApplication.class, args);
+
+
+
+
+
+
+
+
+
 	}
 
 }

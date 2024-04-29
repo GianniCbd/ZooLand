@@ -17,6 +17,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class AnimalSRV {
@@ -38,12 +42,12 @@ public class AnimalSRV {
 
     public AnimalDTO saveAnimal(AnimalDTO animalDTO, User user) {
         Habitat habitat = habitatoDAO.findById(animalDTO.habitat().getId())
-                .orElseThrow(() -> new BadRequestException("Invalid RoomType Id"));
+                .orElseThrow(() -> new BadRequestException("Invalid habitat Id"));
 
         User loadedUser = userRepository.findById(user.getId()).orElseThrow(() -> new NotFoundException("User not found"));
-        Animal animal = new Animal(animalDTO.name(), animalDTO.species(), animalDTO.age(), animalDTO.gender(), animalDTO.favFood(), animalDTO.weight(), animalDTO.height(), animalDTO.image(),habitat);
+        Animal animal = new Animal(animalDTO.name(), animalDTO.species(), animalDTO.age(), animalDTO.gender(), animalDTO.favFood(), animalDTO.weight(), animalDTO.height(), animalDTO.image(), animalDTO.distribution(), animalDTO.reproduction(), habitat);
         animalDAO.save(animal);
-        AnimalDTO an = new AnimalDTO(animal.getName(), animalDTO.species(), animal.getAge(), animalDTO.gender(), animalDTO.favFood(), animal.getWeight(), animal.getHeight(), animal.getImage(),habitat);
+        AnimalDTO an = new AnimalDTO(animal.getName(), animalDTO.species(), animal.getAge(), animalDTO.gender(), animalDTO.favFood(), animal.getWeight(), animal.getHeight(), animal.getImage(), animalDTO.distribution(), animalDTO.reproduction(), habitat);
         return an;
     }
     public Animal getAnimalById(Long id) {
@@ -51,6 +55,8 @@ public class AnimalSRV {
     }
     public Animal updateAnimal(Long id, AnimalDTO animalDTO) {
         Animal found = animalDAO.findById(id).orElseThrow(() -> new NotFoundException("Animal not found with ID: " + id));
+
+
         found.setName(animalDTO.name());
         found.setSpecies(animalDTO.species());
         found.setAge(animalDTO.age());
@@ -59,7 +65,8 @@ public class AnimalSRV {
         found.setWeight(animalDTO.weight());
         found.setHeight(animalDTO.height());
         found.setImage(animalDTO.image());
-        found.setHabitat(animalDTO.habitat());
+        found.setDistribution(animalDTO.distribution());
+        found.setReproduction(animalDTO.reproduction());
 
         return animalDAO.save(found);
     }
@@ -76,4 +83,20 @@ public class AnimalSRV {
         animalDAO.delete(animal);
     }
 
+//--------------------------------------------------
+
+    public List<Object[]> countAnimalsByHabitat() {
+        return animalDAO.countAnimalsByHabitat();
+    }
+    public Map<String, List<Animal>> getAnimalsGroupedByHabitatName() {
+        List<Animal> allAnimals = animalDAO.findAll();
+        Map<String, List<Animal>> animalsByHabitat = new HashMap<>();
+        for (Animal animal : allAnimals) {
+            String habitatName = animal.getHabitat().getName();
+            animalsByHabitat.computeIfAbsent(habitatName, k -> new ArrayList<>()).add(animal);
+        }
+        return animalsByHabitat;
+    }
 }
+
+

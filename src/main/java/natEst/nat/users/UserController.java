@@ -16,6 +16,7 @@ public class UserController {
     UserService userSRV;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Page<User> getAll(@RequestParam(defaultValue = "0") int pageNumber,
                              @RequestParam(defaultValue = "10") int pageSize,
                              @RequestParam(defaultValue = "name") String orderBy) {
@@ -29,15 +30,19 @@ public class UserController {
 
     @GetMapping("/me")
     public UserResponseDTO getCurrentUser(@AuthenticationPrincipal User authenticatedUser) {
+
         return new UserResponseDTO(
                 authenticatedUser.getId(),
                 authenticatedUser.getName(),
                 authenticatedUser.getSurname(),
                 authenticatedUser.getEmail(),
                 authenticatedUser.getPassword(),
-                authenticatedUser.getConfirmPassword()
+                authenticatedUser.getConfirmPassword(),
+                authenticatedUser.getRoles()
         );
     }
+
+
 
     @PutMapping("me/{id}")
 
@@ -46,7 +51,7 @@ public class UserController {
     }
 
     @DeleteMapping("me/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('USER')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteAuthorById(@PathVariable UUID id, @AuthenticationPrincipal User currentAuthenticatedUser) {
         userSRV.deleteById(id, currentAuthenticatedUser);

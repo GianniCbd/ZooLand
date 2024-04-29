@@ -7,14 +7,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import natEst.nat.enums.Role;
 import natEst.nat.favorite.Favorite;
+import natEst.nat.role.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
@@ -32,22 +31,28 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private String confirmPassword;
-    @Enumerated (EnumType.STRING)
-    private Set<Role> roles=new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Favorite> favorites;
 
 
-    public User(String name, String surname, String email, String password, String confirmPassword) {
+
+    public User(String name, String surname, String email, String password, String confirmPassword,Set<Role> roles) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
         this.confirmPassword = confirmPassword;
         this.favorites = new ArrayList<>();
-
-        this.roles.add(Role.ADMIN);
+        this.roles = roles;
     }
 
     public void addFavorite(Favorite favorite) {
@@ -55,12 +60,26 @@ public class User implements UserDetails {
     }
 
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.name()))
-                .collect(Collectors.toList());
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getRole()));
+        }
+        return authorities;
     }
+
+
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
+
+    public void removeRole(Role role) {
+        this.roles.remove(role);
+        role.getUsers().remove(this);
+    }
+
     @Override
     public String getUsername() {
         return null;
