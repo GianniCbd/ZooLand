@@ -11,4 +11,5 @@ import java.util.UUID;
 public interface CardDAO extends JpaRepository<Card, UUID> {
     Page<Card> findAllByUserId(UUID userId, Pageable pageable);
 
+
 }

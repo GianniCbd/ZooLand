@@ -12,4 +12,6 @@ public interface AnimalDAO extends JpaRepository<Animal,Long> {
 
     @Query("SELECT a.habitat.name, COUNT(a) FROM Animal a GROUP BY a.habitat.name ORDER BY a.habitat.name")
     List<Object[]> countAnimalsByHabitat();
+
+
 }

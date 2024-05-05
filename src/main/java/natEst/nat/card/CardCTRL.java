@@ -1,7 +1,6 @@
 package natEst.nat.card;
 
 import natEst.nat.exceptions.BadRequestException;
-import natEst.nat.exceptions.PaymentException;
 import natEst.nat.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -54,22 +53,19 @@ public class CardCTRL {
         return this.cardSrv.save(userId, cartaDTO);
     }
 
+@PutMapping("/{id}")
+public Card updateCard(@PathVariable UUID id, @RequestBody CardDTO cardDTO){
+        return cardSrv.updateCard(id,cardDTO);
+}
 
-    @PostMapping("/{cardId}/payments")
-    public void effettuaPagamento(@PathVariable UUID cardId, @RequestParam double amount) {
-        try {
-            cardSrv.makePayment(cardId, amount);
-        } catch (PaymentException e) {
-            throw new BadRequestException("Errore durante il pagamento: " + e.getMessage());
-        }
-    }
+
+
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable UUID id) {
         cardSrv.delete(id);
     }
-
 }
+
 

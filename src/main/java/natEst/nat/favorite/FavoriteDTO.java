@@ -4,7 +4,7 @@ package natEst.nat.favorite;
 import java.util.UUID;
 
 public record FavoriteDTO(
-        long animal,
+        long animalId,
         UUID user
 ) {
 }

@@ -20,20 +20,17 @@ public class Card {
     @GeneratedValue
     private UUID id;
     private String fullName;
-    private double amount;
     private String cardNumber;
     private LocalDate expired;
     private String cvv;
-    private LocalDate paymentDate;
     @Enumerated(EnumType.STRING)
     private CardType cardType;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Card(String fullName,double amount, String cardNumber, LocalDate expired, String cvv,CardType cardType, User user) {
+    public Card(String fullName, String cardNumber, LocalDate expired, String cvv,CardType cardType, User user) {
         this.fullName = fullName;
-        this.amount = amount;
         this.cardNumber = cardNumber;
         this.expired = expired;
         this.cvv = cvv;

@@ -49,7 +49,7 @@ public class FavoriteSRV {
     }
 
     public Favorite save(UUID userId, FavoriteDTO favoriteDTO) {
-        Animal animal = animalDAO.findById(favoriteDTO.animal()).orElseThrow(() -> new NotFoundException("manga non trovato con id: " + favoriteDTO.animal()));
+        Animal animal = animalDAO.findById(favoriteDTO.animalId()).orElseThrow(() -> new NotFoundException("animal non trovato con id: " + favoriteDTO.animalId()));
         User user = userDAO.findById(userId).orElseThrow(() -> new NotFoundException("user non trovato con id: " + userId));
         Favorite favorite = new Favorite(animal, user);
         user.addFavorite(favorite);

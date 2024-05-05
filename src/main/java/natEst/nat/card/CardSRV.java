@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
@@ -31,8 +30,8 @@ public class CardSRV {
     }
 
     public Card save(UUID userId, CardDTO cardDTO) {
-        User user = userDAO.findById(userId).orElseThrow(() -> new NotFoundException("user non trovao"));
-        Card card = new Card(cardDTO.fullName(), cardDTO.amount(), cardDTO.cardNumber(), cardDTO.expired(), cardDTO.cvv(),cardDTO.cardType(), user);
+        User user = userDAO.findById(userId).orElseThrow(() -> new NotFoundException("user non trovato"));
+        Card card = new Card(cardDTO.fullName(),  cardDTO.cardNumber(), cardDTO.expired(), cardDTO.cvv(),cardDTO.cardType(), user);
         return cardDAO.save(card);
     }
 
@@ -46,15 +45,16 @@ public class CardSRV {
         return cards;
     }
 
-
-
-    public void makePayment(UUID cardId, double amount) {
-        Card card = findById(cardId);
-
-        card.setAmount(card.getAmount() - amount);
-        card.setPaymentDate(LocalDate.now());
-        cardDAO.save(card);
+    public Card updateCard( UUID id,CardDTO cardDTO){
+        Card found = cardDAO.findById(id).orElseThrow(()-> new NotFoundException("Card not found with ID: " + id));
+               found.setFullName(cardDTO.fullName());
+                found.setCardNumber(cardDTO.cardNumber());
+                found.setExpired(cardDTO.expired());
+                found.setCvv(cardDTO.cvv());
+                found.setCardType(cardDTO.cardType());
+                return cardDAO.save(found);
     }
+
 
     public void delete(UUID cardId) {
         Card card = this.findById(cardId);
