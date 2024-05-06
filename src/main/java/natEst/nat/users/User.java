@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 import natEst.nat.favorite.Favorite;
 import natEst.nat.role.Role;
+import natEst.nat.tickets.Ticket;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -43,6 +44,9 @@ public class User implements UserDetails {
     @JsonIgnore
     private List<Favorite> favorites;
 
+    @ManyToMany(mappedBy = "user")
+   @JsonIgnore
+    private List<Ticket> tickets;
 
 
     public User(String name, String surname, String email, String password, String confirmPassword,Set<Role> roles) {
@@ -52,6 +56,7 @@ public class User implements UserDetails {
         this.password = password;
         this.confirmPassword = confirmPassword;
         this.favorites = new ArrayList<>();
+        this.tickets = new ArrayList<>();
         this.roles = roles;
     }
 
@@ -59,7 +64,9 @@ public class User implements UserDetails {
         this.favorites.add(favorite);
     }
 
-
+    public void addTicket(Ticket ticket){
+        this.tickets.add(ticket);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
