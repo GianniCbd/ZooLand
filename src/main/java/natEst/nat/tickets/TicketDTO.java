@@ -1,14 +1,13 @@
 package natEst.nat.tickets;
 
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 
 public record TicketDTO(
 
-        String ticketType,
-         Double price,
-        LocalDateTime purchaseDateTime,
-        LocalDateTime validFromDateTime,
-        LocalDateTime validUntilDateTime,
-        boolean used
-) {
+        @NotBlank(message = "Il tipo di biglietto non può essere vuoto") String ticketType,
+        @Positive(message = "Il prezzo deve essere un valore positivo") int price
+
+
+      ) {
 }

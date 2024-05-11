@@ -56,13 +56,13 @@ public class FavoriteSRV {
         return favoriteDAO.save(favorite);
     }
 
-    public void delete(UUID userId, long id) {
-        User user = userDAO.findById(userId).orElseThrow(() -> new NotFoundException("user non trovato"));
-        List<Favorite> favorites = user.getFavorites();
-        Favorite favorite1 = favorites.stream().filter(f -> f.getId() == id).findFirst().get();
-        favorites.remove(favorite1);
-        favoriteDAO.delete(favorite1);
-    }
+//    public void delete(UUID userId, long id) {
+//        User user = userDAO.findById(userId).orElseThrow(() -> new NotFoundException("user non trovato"));
+//        List<Favorite> favorites = user.getFavorites();
+//        Favorite favorite1 = favorites.stream().filter(f -> f.getId() == id).findFirst().get();
+//        favorites.remove(favorite1);
+//        favoriteDAO.delete(favorite1);
+//    }
 
     public void deleteByUser(UUID userId, long id) {
         Favorite favorite = favoriteDAO.findByUserIdAndAnimalId(userId, id);

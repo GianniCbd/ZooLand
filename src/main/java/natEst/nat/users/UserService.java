@@ -57,6 +57,7 @@ public class UserService {
                 roles
         );
         User savedUser = userRep.save(user);
+
         return new UserResponseDTO(
                 savedUser.getId(),
                 savedUser.getName(),

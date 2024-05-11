@@ -1,4 +1,4 @@
-package natEst.nat.tickets;
+package natEst.nat.cart;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,12 +9,11 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface TicketDAO extends JpaRepository<Ticket,Long> {
+public interface CartDAO extends JpaRepository<Cart,Long> {
 
-    Page<Ticket> findAllUserById(UUID userId, Pageable pageable);
+    Page<Cart> findAllByUserId(UUID userId, Pageable pageable);
 
-    List<Ticket>findByUser_id(UUID userId);
-
+    List<Cart> findByUserId(UUID userId);
 
 
 }

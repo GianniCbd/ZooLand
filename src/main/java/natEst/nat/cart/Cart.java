@@ -1,32 +1,35 @@
-package natEst.nat.tickets;
+package natEst.nat.cart;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import natEst.nat.tickets.Ticket;
 import natEst.nat.users.User;
 
 @Entity
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
 @ToString
-public class Ticket {
+public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
-    private String ticketType;
-    private int price;
-
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    private Ticket ticket;
+    @ManyToOne
     private User user;
 
-    public Ticket(String ticketType,int price){
-        this.ticketType = ticketType;
-        this.price=price;
 
+
+    public Cart(Ticket ticket, User user) {
+
+        this.ticket = ticket;
+        this.user = user;
     }
+
+
 }

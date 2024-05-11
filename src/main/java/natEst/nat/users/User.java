@@ -49,6 +49,8 @@ public class User implements UserDetails {
     private List<Ticket> tickets;
 
 
+
+
     public User(String name, String surname, String email, String password, String confirmPassword,Set<Role> roles) {
         this.name = name;
         this.surname = surname;

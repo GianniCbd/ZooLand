@@ -37,7 +37,7 @@ public class TicketSrv {
         return tickets;
     }
 
-    public List<Ticket> getFTicketsByUserId(UUID userId) {
+    public List<Ticket> getTicketsByUserId(UUID userId) {
         User user = userDAO.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User not found with id: " + userId));
         return ticketDAO.findByUser_id(userId);
@@ -47,11 +47,19 @@ public class TicketSrv {
         return ticketDAO.findById(id).orElseThrow(() -> new NotFoundException("il ticket con id: " + id + " non è stato trovato"));
     }
 
-    public Ticket save(UUID userId, TicketDTO ticketDTO) {
-        User user = userDAO.findById(userId).orElseThrow(() -> new NotFoundException("user non trovato con id: " + userId));
-        Ticket ticket = new Ticket( ticketDTO.ticketType(), ticketDTO.price(), ticketDTO.purchaseDateTime(),ticketDTO.validFromDateTime(),ticketDTO.validUntilDateTime(),user);
-        user.addTicket(ticket);
-        return ticketDAO.save(ticket);
+//    public Ticket saveTicketUser(UUID userId, TicketDTO ticketDTO) {
+//        User user = userDAO.findById(userId).orElseThrow(() -> new NotFoundException("user non trovato con id: " + userId));
+//        Ticket ticket = new Ticket( ticketDTO.ticketType(), ticketDTO.price(),user);
+//        user.addTicket(ticket);
+//        return ticketDAO.save(ticket);
+//    }
+
+    public TicketDTO save(TicketDTO ticketDTO,User user) {
+        User loadedUser = userDAO.findById(user.getId()).orElseThrow(() -> new NotFoundException("user not found"));
+        Ticket ticket = new Ticket(ticketDTO.ticketType(), ticketDTO.price());
+        ticketDAO.save(ticket);
+        TicketDTO tic = new TicketDTO(ticket.getTicketType(), ticket.getPrice() );
+        return tic;
     }
 
     public Ticket updateTicket (Long id, TicketDTO ticketDTO){
@@ -61,18 +69,10 @@ public class TicketSrv {
         return ticketDAO.save(found);
     }
 
-    public void delete(UUID userId, long id) {
-        User user = userDAO.findById(userId).orElseThrow(() -> new NotFoundException("user non trovato"));
-        List<Ticket> tickets = user.getTickets();
-        Ticket ticket1 = tickets.stream().filter(t -> t.getId() == id).findFirst().get();
-        tickets.remove(ticket1);
-        ticketDAO.delete(ticket1);
+    public void delete(Long id) {
+        Ticket ticket = this.findById(id);
+        ticketDAO.delete(ticket);
     }
 
-    public void deleteByUser(UUID userId, long id) {
-        Ticket ticket = ticketDAO.findByUserAndTicketId(userId, id);
-        if (ticket != null) {
-            ticketDAO.delete(ticket);
-        }
-    }
+
 }
