@@ -47,6 +47,11 @@ public class CartSRV {
         return cartDAO.save(cart);
     }
 
+    public int countTicketsInCart(UUID userId) {
+        Long count = cartDAO.countByUserId(userId);
+        return count != null ? count.intValue() : 0; // Gestisce anche il caso di null
+    }
+
     public void delete(Long id) {
         Cart cart = this.findById(id);
         cartDAO.delete(cart);

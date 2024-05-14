@@ -15,7 +15,7 @@ import natEst.nat.users.User;
 @ToString
 public class Cart {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne

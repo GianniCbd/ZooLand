@@ -3,6 +3,7 @@ package natEst.nat.cart;
 import natEst.nat.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -37,5 +38,12 @@ public class CartCTRL {
     @DeleteMapping("/{id}")
     public void deleteCart(@PathVariable Long id) {
         cartSRV.delete(id);
+    }
+
+
+    @GetMapping("/count")
+    public ResponseEntity<Integer> getTicketCountInCart(@RequestParam UUID userId) {
+        int count = cartSRV.countTicketsInCart(userId);
+        return ResponseEntity.ok(count);
     }
 }

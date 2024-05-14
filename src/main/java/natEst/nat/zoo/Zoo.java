@@ -21,6 +21,10 @@ public class Zoo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String city;
+    private String address;
+    private String postCode;
+    private int cellNumber;
     private String email;
     private  String image;
 
@@ -33,9 +37,13 @@ public class Zoo {
     @JsonIgnore
     private List<Habitat> listaHabitat;
 
-    public Zoo(String name, String email,String image) {
+    public Zoo(String name, String city, String address, String postCode, int cellNumber, String email, String image) {
         this.name = name;
+        this.city = city;
+        this.address = address;
+        this.postCode = postCode;
+        this.cellNumber = cellNumber;
         this.email = email;
-        this.image=image;
+        this.image = image;
     }
 }

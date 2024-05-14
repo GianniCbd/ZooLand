@@ -14,7 +14,7 @@ import natEst.nat.users.User;
 @ToString
 public class Ticket {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String ticketType;
     private int price;

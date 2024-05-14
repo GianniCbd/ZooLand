@@ -23,6 +23,7 @@ public class ZooCTRL {
     public List<Zoo> getAllZoos(@RequestParam(required = false, defaultValue = "id") String orderBy) {
         return zooSRV.getAll(orderBy);
     }
+
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<ZooDTO> saveZoo(@RequestBody ZooDTO zooDTO, @AuthenticationPrincipal UserDetails userDetails) {

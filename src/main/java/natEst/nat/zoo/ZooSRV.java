@@ -27,9 +27,9 @@ public class ZooSRV {
     }
     public ZooDTO saveZoo(ZooDTO zooDTO, User user){
         User loadedUser = userRepository.findById(user.getId()).orElseThrow(() -> new NotFoundException("User not found"));
-        Zoo zoo = new Zoo(zooDTO.name(), zooDTO.email(), zooDTO.image());
+        Zoo zoo = new Zoo(zooDTO.name(), zooDTO.city(), zooDTO.address(), zooDTO.postCode(), zooDTO.cellNumber(), zooDTO.email(), zooDTO.image());
         zooDAO.save(zoo);
-        return new ZooDTO(zooDTO.name(),zooDTO.email(), zooDTO.image());
+        return new ZooDTO(zooDTO.name(), zooDTO.city(), zooDTO.address(), zooDTO.postCode(), zooDTO.cellNumber(), zooDTO.email(), zooDTO.image());
     }
 
     public Zoo getZooById(Long id) {
