@@ -65,6 +65,7 @@ public class AnimalSRV {
         found.setWeight(animalDTO.weight());
         found.setHeight(animalDTO.height());
         found.setImage(animalDTO.image());
+        found.setHabitat(animalDTO.habitat());
         found.setDistribution(animalDTO.distribution());
         found.setReproduction(animalDTO.reproduction());
 

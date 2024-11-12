@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 import natEst.nat.favorite.Favorite;
 import natEst.nat.role.Role;
+import natEst.nat.score.Score;
 import natEst.nat.tickets.Ticket;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -48,7 +49,9 @@ public class User implements UserDetails {
    @JsonIgnore
     private List<Ticket> tickets;
 
-
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Score> scores = new ArrayList<>();
 
 
     public User(String name, String surname, String email, String password, String confirmPassword,Set<Role> roles) {
@@ -60,6 +63,17 @@ public class User implements UserDetails {
         this.favorites = new ArrayList<>();
         this.tickets = new ArrayList<>();
         this.roles = roles;
+    }
+
+
+    public void addScore(Score score) {
+        this.scores.add(score);
+        score.setUser(this);
+    }
+
+    public void removeScore(Score score) {
+        this.scores.remove(score);
+        score.setUser(null);
     }
 
     public void addFavorite(Favorite favorite) {
@@ -91,7 +105,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return this.email;
     }
 
     @Override
